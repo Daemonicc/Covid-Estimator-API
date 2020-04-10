@@ -49,7 +49,7 @@ router.post('/api/v1/on-covid-19/xml', (req, res) => {
 
 router.get('/api/v1/on-covid-19/logs', (req, res) => {
   try {
-    const data = fs.readFileSync('Httplog.txt', 'utf8');
+    const data = fs.readFileSync('../Httplog.txt', 'utf8');
     res.set('Content-Type', 'text/javascript');
     res.status(200).send(data);
   } catch (error) {
