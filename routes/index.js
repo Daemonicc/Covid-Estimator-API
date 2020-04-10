@@ -15,7 +15,7 @@ const covid19ImpactEstimator = require('../estimator');
 
 router.post('/api/v1/on-covid-19', (req, res) => {
   try {
-    const { data } = req.body;
+    const data = req.body;
     const result = covid19ImpactEstimator(data);
 
     res.status(200).json(result);
