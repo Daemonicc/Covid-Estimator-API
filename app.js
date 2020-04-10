@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 
 app.use(responseTime((req, res, time) => {
   const log = `${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${Math.trunc(time)} ms\n`;
-  fs.appendFile('./HttpLog.txt', log, (err) => {
+  fs.appendFile('HttpLog.txt', log, (err) => {
     if (err) {
       console.log(err);
     }
