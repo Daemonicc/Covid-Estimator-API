@@ -2,8 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const responseTime = require('response-time');
 const fs = require('fs');
+const path = require('path')
 
 const app = express();
+
 
 const routes = require('./routes/index');
 
@@ -23,7 +25,8 @@ app.use((req, res, next) => {
 
 app.use(responseTime((req, res, time) => {
   const log = `${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${Math.trunc(time)} ms\n`;
-  fs.appendFile('HttpLog.txt', log, (err) => {
+  const logPath = path.join(__dirname, 'HttpLog.txt')
+  fs.appendFile(logPath, log, (err) => {
     if (err) {
       console.log(err);
     }

@@ -1,6 +1,7 @@
 const express = require('express');
 const xml = require('xml2js');
 const fs = require('fs');
+const path = require('path')
 
 
 const builder = new xml.Builder({
@@ -49,7 +50,8 @@ router.post('/api/v1/on-covid-19/xml', (req, res) => {
 
 router.get('/api/v1/on-covid-19/logs', (req, res) => {
   try {
-    const data = fs.readFileSync('Httplog.txt', 'utf8');
+    const logPath = path.join(__dirname, '../HttpLog.txt')
+    const data = fs.readFileSync(logPath, 'utf8');
     res.set('Content-Type', 'text/javascript');
     res.status(200).send(data);
   } catch (error) {
