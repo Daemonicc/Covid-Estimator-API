@@ -23,6 +23,17 @@ router.post('/api/v1/on-covid-19', (req, res) => {
   }
 });
 
+
+router.post('/api/v1/on-covid-19/json', (req, res) => {
+  try {
+    const { data } = req.body;
+    const result = covid19ImpactEstimator(data);
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 router.post('/api/v1/on-covid-19/xml', (req, res) => {
   try {
     const { data } = req.body;
