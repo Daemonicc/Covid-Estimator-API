@@ -29,10 +29,11 @@ router.post('/api/v1/on-covid-19/json', (req, res) => {
   try {
     const { data } = req.body;
     const result = covid19ImpactEstimator(data);
-
+    res.set('Content-Type', 'application/json');
     res.status(200).json(result);
   } catch (error) {
     res.status(500).send(error.message);
+    console.log(error)
   }
 });
 router.post('/api/v1/on-covid-19/xml', (req, res) => {
@@ -41,10 +42,11 @@ router.post('/api/v1/on-covid-19/xml', (req, res) => {
     const result = covid19ImpactEstimator(data);
 
     const resultXML = builder.buildObject(result);
-    res.set('Content-Type', 'text/xml');
+    res.set('Content-Type', 'application/xml');
     res.status(200).send(resultXML);
   } catch (error) {
     res.status(500).send(error.message);
+    console.log(error)
   }
 });
 
@@ -52,7 +54,7 @@ router.get('/api/v1/on-covid-19/logs', (req, res) => {
   try {
     const logPath = path.join(__dirname, '../HttpLog.txt')
     const data = fs.readFileSync(logPath, 'utf8');
-    res.set('Content-Type', 'text/javascript');
+    res.set('Content-Type', 'text/html');
     res.status(200).send(data);
   } catch (error) {
     res.status(500).send(error.message);
