@@ -27,7 +27,7 @@ router.post('/api/v1/on-covid-19', (req, res) => {
 
 router.post('/api/v1/on-covid-19/json', (req, res) => {
   try {
-    const { data } = req.body;
+    const data = req.body;
     const result = covid19ImpactEstimator(data);
     res.set('Content-Type', 'application/json');
     res.status(200).json(result);
@@ -38,7 +38,7 @@ router.post('/api/v1/on-covid-19/json', (req, res) => {
 });
 router.post('/api/v1/on-covid-19/xml', (req, res) => {
   try {
-    const { data } = req.body;
+    const data = req.body;
     const result = covid19ImpactEstimator(data);
 
     const resultXML = builder.buildObject(result);
