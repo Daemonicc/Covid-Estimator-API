@@ -8,7 +8,7 @@ const builder = new xml.Builder({
   renderOpts: { pretty: false },
   headless: true,
   explicitRoot: true,
-  rootName: 'result'
+  rootName: 'estimate'
 });
 const router = express.Router();
 const covid19ImpactEstimator = require('../estimator');
@@ -20,7 +20,7 @@ router.post('/api/v1/on-covid-19', (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send({ error: error.message});
   }
 });
 
@@ -32,8 +32,7 @@ router.post('/api/v1/on-covid-19/json', (req, res) => {
     res.set('Content-Type', 'application/json');
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).send(error.message);
-    console.log(error)
+    res.status(500).send({ error: error.message});
   }
 });
 router.post('/api/v1/on-covid-19/xml', (req, res) => {
@@ -45,8 +44,8 @@ router.post('/api/v1/on-covid-19/xml', (req, res) => {
     res.set('Content-Type', 'application/xml');
     res.status(200).send(resultXML);
   } catch (error) {
-    res.status(500).send(error.message);
-    console.log(error)
+    res.status(500).send({ error: error.message});
+
   }
 });
 
@@ -56,7 +55,7 @@ router.get('/api/v1/on-covid-19/logs', (req, res) => {
     const data = fs.readFileSync(logPath, 'utf8');
     res.status(200).send(data);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send({ error: error.message});
   }
 });
 
