@@ -1,13 +1,37 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const responseTime = require('response-time');
 const fs = require('fs');
 const path = require('path')
 
 const app = express();
 
+const getDurationInMilliseconds  = (start) => {
+  const NS_PER_SEC = 1e9
+  const NS_TO_MS = 1e6
+  const diff = process.hrtime(start)
+
+  return Math.trunc((diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS)
+}
+
+
+app.use((req, res, next) => {
+  const start = process.hrtime()
+  console.log(start)         
+    const durationInMilliseconds = getDurationInMilliseconds (start)
+    const log = `${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${durationInMilliseconds.toLocaleString()}ms\n`;
+    const logPath = path.join(__dirname, 'HttpLog.txt')
+    console.log('writing')
+    fs.appendFileSync(logPath, log, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  next()
+})
 
 const routes = require('./routes/index');
+
+
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,16 +46,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-
-app.use(responseTime((req, res, time) => {
-  const log = `${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${Math.trunc(time)}ms\n`;
-  const logPath = path.join(__dirname, 'HttpLog.txt')
-  fs.appendFile(logPath, log, (err) => {
-    if (err) {
-      console.log(err);
-    }
-  });
-}));
+;
 
 app.use(routes);
 
