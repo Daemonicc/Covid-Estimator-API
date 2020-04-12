@@ -6,11 +6,19 @@ const path = require('path')
 const app = express();
 
 const getDurationInMilliseconds  = (start) => {
+  const zeroPad = (num, places) => String(num).padStart(places, '0')
   const NS_PER_SEC = 1e9
   const NS_TO_MS = 1e6
   const diff = process.hrtime(start)
 
-  return Math.trunc((diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS)
+  const time = Math.trunc((diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS)
+
+  if (time <= 9){
+    return zeroPad(num, 2)
+  }else{
+    return time
+  }
+  
 }
 
 
