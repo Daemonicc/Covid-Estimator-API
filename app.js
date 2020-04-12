@@ -14,7 +14,7 @@ const getDurationInMilliseconds  = (start) => {
   const time = Math.trunc((diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS)
 
   if (time <= 9){
-    return zeroPad(num, 2)
+    return zeroPad(time, 2)
   }else{
     return time
   }
