@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use(responseTime((req, res, time) => {
-  const log = `${Date.now()}\t\t${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${Math.trunc(time)} ms\n`;
+  const log = `${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${Math.trunc(time)}ms\n`;
   const logPath = path.join(__dirname, 'HttpLog.txt')
   fs.appendFile(logPath, log, (err) => {
     if (err) {
