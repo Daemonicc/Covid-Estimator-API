@@ -53,6 +53,7 @@ router.get('/api/v1/on-covid-19/logs', (req, res) => {
   try {
     const logPath = path.join(__dirname, '../HttpLog.txt')
     const data = fs.readFileSync(logPath, 'utf8');
+    res.set('Content-Type', 'text/plain');
     res.status(200).send(data);
   } catch (error) {
     res.status(500).send({ error: error.message});
