@@ -21,7 +21,7 @@ const getDurationInMilliseconds  = (start) => {
 app.use((req, res, next) => {
   const start = process.hrtime()
   console.log(start)         
-    const durationInMilliseconds = getDurationInMilliseconds (start)
+    let durationInMilliseconds = getDurationInMilliseconds (start)
     const zeroPad = (num, places) => String(num).padStart(places, '0')
     if (durationInMilliseconds <= 9){
       durationInMilliseconds = zeroPad(durationInMilliseconds, 2)
