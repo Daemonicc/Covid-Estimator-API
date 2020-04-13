@@ -6,18 +6,14 @@ const path = require('path')
 const app = express();
 
 const getDurationInMilliseconds  = (start) => {
-  const zeroPad = (num, places) => String(num).padStart(places, '0')
+  
   const NS_PER_SEC = 1e9
   const NS_TO_MS = 1e6
   const diff = process.hrtime(start)
 
   const time = Math.trunc((diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS)
 
-  if (time <= 9){
-    return zeroPad(time, 2)
-  }else{
-    return time
-  }
+ 
   
 }
 
@@ -26,6 +22,10 @@ app.use((req, res, next) => {
   const start = process.hrtime()
   console.log(start)         
     const durationInMilliseconds = getDurationInMilliseconds (start)
+    const zeroPad = (num, places) => String(num).padStart(places, '0')
+    if (time <= 9){
+      durationInMilliseconds = zeroPad(time, 2)
+    }
     const log = `${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${durationInMilliseconds.toLocaleString()}ms\n`;
     const logPath = path.join(__dirname, 'HttpLog.txt')
     console.log('writing')
