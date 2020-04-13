@@ -31,7 +31,7 @@ app.use(responseTime((req, res, time) => {
  if (timer < 10) {
    timer = padDigits(timer, 2)
  }
-  const log = `${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${timer}ms\n`;
+  const log = `${req.method}\t${req.url}\t${res.statusCode}\t${timer}ms\n`;
   const logPath = path.join(__dirname, 'HttpLog.txt')
   fs.appendFile(logPath, log, (err) => {
     if (err) {
