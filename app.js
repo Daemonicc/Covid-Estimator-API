@@ -1,45 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const responseTime = require('response-time');
 const fs = require('fs');
 const path = require('path')
 
 const app = express();
 
-const getDurationInMilliseconds  = (start) => {
-  
-  const NS_PER_SEC = 1e9
-  const NS_TO_MS = 1e6
-  const diff = process.hrtime(start)
-
-  const time = Math.trunc((diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS)
-
- 
-  
-}
-
-
-app.use((req, res, next) => {
-  const start = process.hrtime()
-  console.log(start)         
-    let durationInMilliseconds = getDurationInMilliseconds (start)
-    const zeroPad = (num, places) => String(num).padStart(places, '0')
-    if (durationInMilliseconds <= 9){
-      durationInMilliseconds = zeroPad(durationInMilliseconds, 2)
-    }
-    const log = `${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${durationInMilliseconds.toLocaleString()}ms\n`;
-    const logPath = path.join(__dirname, 'HttpLog.txt')
-    console.log('writing')
-    fs.appendFileSync(logPath, log, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-  next()
-})
 
 const routes = require('./routes/index');
-
-
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -54,7 +22,23 @@ app.use((req, res, next) => {
   }
   next();
 });
-;
+
+app.use(responseTime((req, res, time) => {
+  let timer = Math.round(time)
+  function padDigits(number, digits) {
+    return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+}
+ if (timer < 10) {
+   timer = padDigits(timer, 2)
+ }
+  const log = `${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${timer}ms\n`;
+  const logPath = path.join(__dirname, 'HttpLog.txt')
+  fs.appendFile(logPath, log, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+}));
 
 app.use(routes);
 
