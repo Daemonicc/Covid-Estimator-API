@@ -24,7 +24,7 @@ app.use((req, res, next) => {
     const durationInMilliseconds = getDurationInMilliseconds (start)
     const zeroPad = (num, places) => String(num).padStart(places, '0')
     if (time <= 9){
-      durationInMilliseconds = zeroPad(time, 2)
+      durationInMilliseconds = zeroPad(durationInMilliseconds, 2)
     }
     const log = `${req.method}\t\t${req.url}\t\t${res.statusCode}\t\t${durationInMilliseconds.toLocaleString()}ms\n`;
     const logPath = path.join(__dirname, 'HttpLog.txt')
